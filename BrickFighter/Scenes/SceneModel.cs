@@ -1,11 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using System;
+using BrickFighter.GameObjects;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BrickFighter.Scenes
 {
@@ -13,6 +10,7 @@ namespace BrickFighter.Scenes
     {
         protected ContentManager content;
         protected SpriteBatch spriteBatch;
+        private List<GameObject> _gameObjects = new List<GameObject>();
 
         public SceneModel(ContentManager content, SpriteBatch spriteBatch)
         {
@@ -20,14 +18,43 @@ namespace BrickFighter.Scenes
             this.spriteBatch = spriteBatch;
         }
 
-        protected SceneModel(SpriteBatch spriteBatch)
+        public abstract void LoadContent();
+
+        public void Update(float dt)
         {
-            this.spriteBatch = spriteBatch;
+            foreach (GameObject obj in _gameObjects)
+            {
+                if (obj.enable)
+                    obj.Update(dt);
+            }
+
+            for (int i = _gameObjects.Count - 1; i >= 0; i--)
+            {
+                if (_gameObjects[i].isFree)
+                {
+                    _gameObjects[i].OnFree();
+                    _gameObjects.RemoveAt(i);
+                }
+            }
         }
 
-        public abstract void LoadContent();
-        public abstract void Update(GameTime gameTime);
         public abstract void Draw(GameTime gameTime);
 
+        public void AddGameObject(GameObject obj)
+        {
+            obj.Start();
+            _gameObjects.Add(obj);
+        }
+
+        public List<T> GetGameObjects<T>()
+        {
+            var gameObjects = new List<T>();
+
+            foreach (GameObject gameObject in _gameObjects)
+                if (gameObject is T typedObject)
+                    gameObjects.Add(typedObject);
+
+            return gameObjects;
+        }
     }
 }

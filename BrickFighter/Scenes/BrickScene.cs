@@ -14,6 +14,7 @@ namespace BrickFighter.Scenes
         public override void LoadContent()
         {
             // Load game content here
+
         }
 
         public override void Update(GameTime gameTime)
