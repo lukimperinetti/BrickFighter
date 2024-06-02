@@ -1,24 +1,21 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
+﻿using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using BrickFighter.GameObjects;
 using System.Collections.Generic;
+using System.Diagnostics;
+
 
 namespace BrickFighter.Scenes
 {
-    public abstract class SceneModel
+    public abstract class Scene
     {
         protected ContentManager content;
         protected SpriteBatch spriteBatch;
         private List<GameObject> _gameObjects = new List<GameObject>();
 
-        public SceneModel(ContentManager content, SpriteBatch spriteBatch)
-        {
-            this.content = content;
-            this.spriteBatch = spriteBatch;
-        }
+        public virtual void Load() { }
+        public virtual void Unload() { }
 
-        public abstract void LoadContent();
 
         public void Update(float dt)
         {
@@ -38,7 +35,10 @@ namespace BrickFighter.Scenes
             }
         }
 
-        public abstract void Draw(GameTime gameTime);
+        public void Draw(SpriteBatch sb) {
+            System.Diagnostics.Debug.WriteLine("Draw du SModel");
+
+        }
 
         public void AddGameObject(GameObject obj)
         {

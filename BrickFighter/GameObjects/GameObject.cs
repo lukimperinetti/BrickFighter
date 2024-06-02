@@ -1,18 +1,18 @@
 ﻿using BrickFighter.Scenes;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Diagnostics;
+
+
 
 namespace BrickFighter.GameObjects
 {
-    public class GameObject
+    public abstract class GameObject
     {
-        private bool _enable;
-        public SceneModel root { get; private set; }
+        public Scene root { get; private set; }
         public bool isFree = false;
+        private bool _enable;
         public bool enable { 
             get { return _enable; }
             set {
@@ -25,7 +25,7 @@ namespace BrickFighter.GameObjects
             } 
         }
 
-        public GameObject(bool enable, SceneModel root)
+        public GameObject(bool enable, Scene root)
         {
             _enable = enable;
             this.root = root;
@@ -36,7 +36,10 @@ namespace BrickFighter.GameObjects
         public virtual void Start() { }
         public virtual void OnFree() { }
         public virtual void Update(float dt) { }
-        public virtual void Draw(SpriteBatch sb) { }
+        public virtual void Draw(SpriteBatch sb) 
+        { 
+            System.Diagnostics.Debug.WriteLine("Draw du GO");
 
+        }
     }
 }
