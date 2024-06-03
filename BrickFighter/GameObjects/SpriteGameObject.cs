@@ -1,15 +1,13 @@
 ﻿using BrickFighter.Scenes;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System.Diagnostics;
-
 
 
 namespace BrickFighter.GameObjects
 {
     public class SpriteGameObject : GameObject
     {
-        public Texture2D texture;
+        protected Texture2D texture;
         public Vector2 position;
         public Color color;
         public float rotation;
@@ -38,8 +36,6 @@ namespace BrickFighter.GameObjects
         {
             if (texture == null) return;
             sb.Draw(texture, position, null, color, rotation, offset, scale, SpriteEffects.None, 0);
-            System.Diagnostics.Debug.WriteLine("Draw du SGO");
-
         }
 
     }

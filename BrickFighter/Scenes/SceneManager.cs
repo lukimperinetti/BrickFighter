@@ -34,7 +34,6 @@ namespace BrickFighter.Scenes
         public void Draw(SpriteBatch sb) {
         _currentScene?.Draw(sb);
             System.Diagnostics.Debug.WriteLine("Draw du SM");
-
         }
 
     }
