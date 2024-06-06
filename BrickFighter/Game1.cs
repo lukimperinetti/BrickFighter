@@ -55,8 +55,6 @@ namespace BrickFighter
 
             // Load the initial scene
             _sceneManager.Load<BrickScene>();
-
-            Debug.WriteLine("on load la BrickScene");
         }
 
         protected override void Update(GameTime gameTime)
@@ -72,10 +70,7 @@ namespace BrickFighter
 
         protected override void Draw(GameTime gameTime)
         {
-            Debug.WriteLine("Draw du Game1");
-
             GraphicsDevice.Clear(Color.CornflowerBlue); // Background color
-
             _spriteBatch.Begin();
             _sceneManager.Draw(_spriteBatch); // Call Draw of SceneManager
             _spriteBatch.End();

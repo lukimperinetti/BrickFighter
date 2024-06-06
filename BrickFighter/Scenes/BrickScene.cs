@@ -10,6 +10,7 @@ namespace BrickFighter.Scenes
         {
             var screen = ServiceLocator.Get<IScreenService>();
             Rectangle bounds = screen.Bounds;
+            AddGameObject(new Ball(bounds, this));
             AddGameObject(new Pad(bounds, this));
         }
     }

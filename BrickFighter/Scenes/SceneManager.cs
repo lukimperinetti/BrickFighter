@@ -31,10 +31,6 @@ namespace BrickFighter.Scenes
             _currentScene?.Update(dt);// call the methode only if currentScene is not nul
         }
 
-        public void Draw(SpriteBatch sb) {
-        _currentScene?.Draw(sb);
-            System.Diagnostics.Debug.WriteLine("Draw du SM");
-        }
-
+        public void Draw(SpriteBatch sb) => _currentScene?.Draw(sb);
     }
 }

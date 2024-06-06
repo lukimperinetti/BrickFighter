@@ -36,10 +36,6 @@ namespace BrickFighter.GameObjects
         public virtual void Start() { }
         public virtual void OnFree() { }
         public virtual void Update(float dt) { }
-        public virtual void Draw(SpriteBatch sb) 
-        { 
-            System.Diagnostics.Debug.WriteLine("Draw du GO");
-
-        }
+        public virtual void Draw(SpriteBatch sb) { }
     }
 }

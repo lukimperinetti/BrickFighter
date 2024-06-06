@@ -36,7 +36,6 @@ namespace BrickFighter.Scenes
         }
 
         public void Draw(SpriteBatch sb) {
-            System.Diagnostics.Debug.WriteLine("Draw du SModel");
             foreach (GameObject obj in _gameObjects)
             {
                 if (obj.enable)
