@@ -21,7 +21,6 @@ namespace BrickFighter
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
 
-            // Set the game resolution to 1080x720
             _graphics.PreferredBackBufferWidth = 1920;
             _graphics.PreferredBackBufferHeight = 1080;
             _graphics.ApplyChanges();
@@ -53,15 +52,20 @@ namespace BrickFighter
             _assetsService.Load<Texture2D>("Brick");
             _assetsService.Load<Texture2D>("lignes");
             _assetsService.Load<Texture2D>("Pad");
+            _assetsService.Load<Texture2D>("AboutButton");
+            _assetsService.Load<Texture2D>("NGbutton");
+            _assetsService.Load<Texture2D>("quitButton");
+            _assetsService.Load<Texture2D>("scoreButton");
+            _assetsService.Load<Texture2D>("Title");
 
             // Load the initial scene
-            _sceneManager.Load<BrickScene>();
+            _sceneManager.Load<MenuScene>();
         }
 
         protected override void Update(GameTime gameTime)
         {
-            if (Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
+            /*if (Keyboard.GetState().IsKeyDown(Keys.Escape))
+                Exit();*/
 
             // Update the current scene
             _sceneManager.Update((float)gameTime.ElapsedGameTime.TotalSeconds); // Call Update of SceneManager

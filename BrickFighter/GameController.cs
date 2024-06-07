@@ -13,6 +13,8 @@ namespace BrickFighter
         public int curentLevel { get; private set; } = 1; //on commence par lvl 1
         public int maxLevel { get; private set; } = 0;
         public int score { get; private set; } = 0;
+        //public int buff { get; private set; } = 0;
+        public List<string> inventory { get; private set; }
         public int lifes { get; private set; } = 3; // on a trois vies
 
         public GameController()
@@ -26,6 +28,7 @@ namespace BrickFighter
             curentLevel = 1;
             score = 0;
             lifes = 3;
+            inventory = new List<string>();
         }
 
         public void LevelUp()
@@ -42,6 +45,12 @@ namespace BrickFighter
         public void AddPoints(int points)
         {
             score += points;
+        }
+        public void AddBuff(string type)
+        {
+            if(type == "armor") { }
+            if(type == "magic") { }
+            if(type == "sword") { }
         }
 
         public int[,] GetBricksLayout()

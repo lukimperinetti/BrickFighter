@@ -8,7 +8,7 @@ namespace BrickFighter.Props
 {
     public class BrickArmor : SpriteGameObject
     {
-        private const int points = 100;
+        private const string armor = "armor";
         public BrickArmor(Scene root) : base(root)
         {
             texture = ServiceLocator.Get<IAssetsService>().Get<Texture2D>("BrickArmor");
@@ -16,7 +16,7 @@ namespace BrickFighter.Props
 
         public override void OnCollide(SpriteGameObject other)
         {
-            ServiceLocator.Get<GameController>().AddPoints(points);
+            ServiceLocator.Get<GameController>().AddBuff(armor);
             enable = false;
             isFree = true;
         }

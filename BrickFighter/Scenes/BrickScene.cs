@@ -2,6 +2,7 @@
 using BrickFighter.Services;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using System;
 
 namespace BrickFighter.Scenes
@@ -32,6 +33,24 @@ namespace BrickFighter.Scenes
                 sm.Load<BrickScene>();
                 return;
             }
+
+            var keyboardState = Keyboard.GetState();
+            var gamePadState = GamePad.GetState(PlayerIndex.One);
+            
+            if (keyboardState.IsKeyDown(Keys.Escape))
+            {
+                var sceneManager = ServiceLocator.Get<ISceneManager>();
+                sceneManager.Load<MenuScene>();
+            }
+            /*if (gamePadState.IsConnected)
+            {
+                // DPad support
+                if (gamePadState.Buttons.Start == ButtonState.Pressed)
+                {
+                        
+                }
+            }*/
+            
 
             base.Update(dt);
         }

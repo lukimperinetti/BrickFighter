@@ -35,7 +35,7 @@ namespace BrickFighter.Scenes
             }
         }
 
-        public void Draw(SpriteBatch sb) {
+        public virtual void Draw(SpriteBatch sb) {
             foreach (GameObject obj in _gameObjects)
             {
                 if (obj.enable)

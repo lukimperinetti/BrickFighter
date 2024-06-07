@@ -8,7 +8,7 @@ namespace BrickFighter.Props
 {
     public class BrickMagic : SpriteGameObject
     {
-        private const int points = 100;
+        private const string magicPower = "magic";
         public BrickMagic(Scene root) : base(root)
         {
             texture = ServiceLocator.Get<IAssetsService>().Get<Texture2D>("BrickMagic");
@@ -16,7 +16,7 @@ namespace BrickFighter.Props
 
         public override void OnCollide(SpriteGameObject other)
         {
-            ServiceLocator.Get<GameController>().AddPoints(points);
+            ServiceLocator.Get<GameController>().AddBuff(magicPower);
             enable = false;
             isFree = true;
         }
