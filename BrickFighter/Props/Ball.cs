@@ -25,21 +25,38 @@ namespace BrickFighter.Props
 
         public override void Update(float dt)
         {
+            var keyboardState = Keyboard.GetState();
+            var gamePadState = GamePad.GetState(PlayerIndex.One);
+
             if (_sticked)
             {
                 var pad = root.GetGameObjects<Pad>()[0];
                 position = new Vector2(pad.position.X, pad.collider.Top - offset.Y - 10f);
-                if (Keyboard.GetState().IsKeyDown(Keys.Space))
+                if (keyboardState.IsKeyDown(Keys.Space))
                 {
                     _sticked = false;
                     _direction = new Vector2(1, -1);
                     _direction = Vector2.Normalize(_direction);
+                }
+                if (gamePadState.IsConnected)
+                {
+                    // DPad support
+                    if (gamePadState.Buttons.A == ButtonState.Pressed)
+                    {
+                        _sticked = false;
+                        _direction = new Vector2(1, -1);
+                        _direction = Vector2.Normalize(_direction);
+                    }
                 }
             }
             else
             {
                 Move(dt);
                 ResolveColisionWithObjects<Pad>();
+                ResolveColisionWithObjects<Brick>();
+                ResolveColisionWithObjects<BrickSword>();
+                ResolveColisionWithObjects<BrickMagic>();
+                ResolveColisionWithObjects<BrickArmor>();
                 BounceOnBounds();
                 CheckOutOfBounds();
             }
@@ -98,6 +115,7 @@ namespace BrickFighter.Props
         {
             if (position.Y > _bounds.Bottom + 100f)
             {
+                ServiceLocator.Get<GameController>().BallOut();
                 //renvoyer un msg Perdu
                 _sticked = true;
             }

@@ -17,7 +17,7 @@ namespace BrickFighter.Scenes
         public virtual void Unload() { }
 
 
-        public void Update(float dt)
+        public virtual void Update(float dt)
         {
             foreach (GameObject obj in _gameObjects)
             {

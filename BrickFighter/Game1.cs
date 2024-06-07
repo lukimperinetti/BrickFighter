@@ -22,13 +22,14 @@ namespace BrickFighter
             IsMouseVisible = true;
 
             // Set the game resolution to 1080x720
-            _graphics.PreferredBackBufferWidth = 1080;
-            _graphics.PreferredBackBufferHeight = 720;
+            _graphics.PreferredBackBufferWidth = 1920;
+            _graphics.PreferredBackBufferHeight = 1080;
             _graphics.ApplyChanges();
         }
 
         protected override void Initialize()
         {
+            new GameController();
             _assetsService = new AssetsService(Content);
             _screenService = new ScreenService(_graphics);
             _sceneManager = new SceneManager();
