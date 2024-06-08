@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BrickFighter
+namespace BrickFighter.Controllers
 {
     public class GameController
     {
@@ -20,7 +20,7 @@ namespace BrickFighter
 
         public GameController()
         {
-            ServiceLocator.Register<GameController>(this);
+            ServiceLocator.Register(this);
             maxLevel = CountLevels();
         }
 
@@ -42,24 +42,18 @@ namespace BrickFighter
             var sm = ServiceLocator.Get<ISceneManager>();
 
             lifes--;
-            if ( lifes == 0 )
+            if (lifes == 0)
             {
-                sm.Load<FightScene>();
+                //sm.Load<FightScene>();
             }
-            //return lifes;
-
         }
 
-        public void AddPoints(int points)
+        /*public void AddBuff(string type)
         {
-            score += points;
-        }
-        public void AddBuff(string type)
-        {
-            if(type == "armor") { }
-            if(type == "magic") { }
-            if(type == "sword") { }
-        }
+            if (type == "armor") { }
+            if (type == "magic") { }
+            if (type == "sword") { }
+        }*/
 
         public int[,] GetBricksLayout()
         {
@@ -96,7 +90,7 @@ namespace BrickFighter
             }
             else
             {
-                throw new DirectoryNotFoundException($"Directory not found at { path }");
+                throw new DirectoryNotFoundException($"Directory not found at {path}");
             }
         }
     }

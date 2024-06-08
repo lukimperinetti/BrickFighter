@@ -4,6 +4,9 @@ using BrickFighter.Scenes;
 using Microsoft.Xna.Framework.Input;
 using BrickFighter.Services;
 using System.Diagnostics;
+using BrickFighter.Controllers;
+//using BrickFighter.Entity;
+using System.Numerics;
 
 namespace BrickFighter
 {
@@ -29,11 +32,13 @@ namespace BrickFighter
         protected override void Initialize()
         {
             new GameController();
+            new EntityGameController();
+
             _assetsService = new AssetsService(Content);
             _screenService = new ScreenService(_graphics);
             _sceneManager = new SceneManager();
-            // Initialize the spriteBatch to register it with the ServiceLocator
             _spriteBatch = new SpriteBatch(GraphicsDevice);
+
             // Register services in the ServiceLocator
             ServiceLocator.Register(Content);
             ServiceLocator.Register(_spriteBatch);
@@ -58,27 +63,28 @@ namespace BrickFighter
             _assetsService.Load<Texture2D>("scoreButton");
             _assetsService.Load<Texture2D>("Title");
             _assetsService.Load<SpriteFont>("MyFont");
+            _assetsService.Load<Texture2D>("PlayerTexture");
+            _assetsService.Load<Texture2D>("EnemyTexture");
 
             // Load the initial scene
             _sceneManager.Load<MenuScene>();
+
+            
+
         }
 
         protected override void Update(GameTime gameTime)
         {
-            /*if (Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();*/
-
             // Update the current scene
-            _sceneManager.Update((float)gameTime.ElapsedGameTime.TotalSeconds); // Call Update of SceneManager
-
+            _sceneManager.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue); // Background color
+            GraphicsDevice.Clear(Color.CornflowerBlue);
             _spriteBatch.Begin();
-            _sceneManager.Draw(_spriteBatch); // Call Draw of SceneManager
+            _sceneManager.Draw(_spriteBatch);
             _spriteBatch.End();
 
             base.Draw(gameTime);

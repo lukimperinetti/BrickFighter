@@ -1,4 +1,5 @@
-﻿using BrickFighter.GameObjects;
+﻿using BrickFighter.Controllers;
+using BrickFighter.GameObjects;
 using BrickFighter.Scenes;
 using BrickFighter.Services;
 using Microsoft.Xna.Framework.Graphics;
@@ -16,7 +17,7 @@ namespace BrickFighter.Props
 
         public override void OnCollide(SpriteGameObject other)
         {
-            ServiceLocator.Get<GameController>().AddBuff(armor);
+            ServiceLocator.Get<EntityGameController>().AddBuff(armor);
             enable = false;
             isFree = true;
         }

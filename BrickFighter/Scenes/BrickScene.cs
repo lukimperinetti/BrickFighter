@@ -1,4 +1,5 @@
-﻿using BrickFighter.Props;
+﻿using BrickFighter.Controllers;
+using BrickFighter.Props;
 using BrickFighter.Services;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -10,20 +11,19 @@ namespace BrickFighter.Scenes
     public class BrickScene : Scene
     {
         private SpriteFont _spriteFont;
-        private string _displayText;
         private Vector2 _textPosition;
-        private GameController _gameController; // Instance de GameController
+        private GameController _gameController;
 
         public override void Load()
         {
             var screen = ServiceLocator.Get<IScreenService>();
+            var assetsService = ServiceLocator.Get<IAssetsService>();
+
             Rectangle bounds = screen.Bounds;
             AddGameObject(new Ball(bounds, this));
             AddGameObject(new Pad(bounds, this));
-            var assetsService = ServiceLocator.Get<IAssetsService>();
-            _spriteFont = assetsService.Get<SpriteFont>("MyFont");
 
-            // Obtenir l'instance de GameController
+            _spriteFont = assetsService.Get<SpriteFont>("MyFont");
             _gameController = ServiceLocator.Get<GameController>();
 
             // Calculer et stocker la position des briques
@@ -47,7 +47,7 @@ namespace BrickFighter.Scenes
             }
 
             var keyboardState = Keyboard.GetState();
-            var gamePadState = GamePad.GetState(PlayerIndex.One);
+            //var gamePadState = GamePad.GetState(PlayerIndex.One); // trouver la touche du gamepad
 
             if (keyboardState.IsKeyDown(Keys.Escape))
             {
@@ -60,12 +60,10 @@ namespace BrickFighter.Scenes
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            var screen = ServiceLocator.Get<IScreenService>();
+            //var screen = ServiceLocator.Get<IScreenService>();
 
             // Dessiner du texte à l'écran
             Color color = Color.White; // Couleur du texte
-
-            // Afficher le nombre de vies
             string lifesText = $"Vies: {_gameController.lifes}";
             Vector2 lifesPosition = new Vector2(10, 1000); // Position du texte des vies à l'écran
             spriteBatch.DrawString(_spriteFont, lifesText, lifesPosition, color);
