@@ -9,13 +9,25 @@ namespace BrickFighter.Scenes
 {
     public class BrickScene : Scene
     {
+        private SpriteFont _spriteFont;
+        private string _displayText;
+        private Vector2 _textPosition;
+        private GameController _gameController; // Instance de GameController
+
         public override void Load()
         {
             var screen = ServiceLocator.Get<IScreenService>();
             Rectangle bounds = screen.Bounds;
             AddGameObject(new Ball(bounds, this));
             AddGameObject(new Pad(bounds, this));
-            AddBricks(bounds);
+            var assetsService = ServiceLocator.Get<IAssetsService>();
+            _spriteFont = assetsService.Get<SpriteFont>("MyFont");
+
+            // Obtenir l'instance de GameController
+            _gameController = ServiceLocator.Get<GameController>();
+
+            // Calculer et stocker la position des briques
+            _textPosition = AddBricks(bounds);
         }
 
         public override void Update(float dt)
@@ -36,26 +48,32 @@ namespace BrickFighter.Scenes
 
             var keyboardState = Keyboard.GetState();
             var gamePadState = GamePad.GetState(PlayerIndex.One);
-            
+
             if (keyboardState.IsKeyDown(Keys.Escape))
             {
                 var sceneManager = ServiceLocator.Get<ISceneManager>();
                 sceneManager.Load<MenuScene>();
             }
-            /*if (gamePadState.IsConnected)
-            {
-                // DPad support
-                if (gamePadState.Buttons.Start == ButtonState.Pressed)
-                {
-                        
-                }
-            }*/
-            
 
             base.Update(dt);
         }
 
-        private void AddBricks(Rectangle bounds)
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            var screen = ServiceLocator.Get<IScreenService>();
+
+            // Dessiner du texte à l'écran
+            Color color = Color.White; // Couleur du texte
+
+            // Afficher le nombre de vies
+            string lifesText = $"Vies: {_gameController.lifes}";
+            Vector2 lifesPosition = new Vector2(10, 1000); // Position du texte des vies à l'écran
+            spriteBatch.DrawString(_spriteFont, lifesText, lifesPosition, color);
+
+            base.Draw(spriteBatch);
+        }
+
+        private Vector2 AddBricks(Rectangle bounds)
         {
             var brickLayout = ServiceLocator.Get<GameController>().GetBricksLayout();
             var brickTexture = ServiceLocator.Get<IAssetsService>().Get<Texture2D>("Brick");
@@ -68,56 +86,68 @@ namespace BrickFighter.Scenes
             float totalWidth = cols * (brickTexture.Width + spaceBetweenBricks) - spaceBetweenBricks;
             float offsetX = (bounds.Width - totalWidth) * .5f;
 
+            Vector2 firstBrickPosition = Vector2.Zero;
+
             for (int row = 0; row < rows; row++)
             {
                 for (int col = 0; col < cols; col++)
                 {
-                    if (brickLayout[col, row] == 1)
+                    if (brickLayout[col, row] != 0)
                     {
-                        float x = bounds.X + offsetX + col * (brickTexture.Width + spaceBetweenBricks);
-                        float y = bounds.Y + verticalOffset + row * (brickTexture.Height + spaceBetweenBricks);
-                        Brick brick = new Brick(this);
-                        brick.position = new Vector2(x, y);
-                        AddGameObject(brick);
-                    }
-                    else if (brickLayout[col, row] == 2)
-                    {
-                        var brickSwordTexture = ServiceLocator.Get<IAssetsService>().Get<Texture2D>("BrickSword");
-                        float totalWidthSword = cols * (brickSwordTexture.Width + spaceBetweenBricks) - spaceBetweenBricks;
-                        float offsetXSword = (bounds.Width - totalWidthSword) * .5f;
+                        Texture2D currentBrickTexture = null;
+                        switch (brickLayout[col, row])
+                        {
+                            case 1:
+                                currentBrickTexture = brickTexture;
+                                break;
+                            case 2:
+                                currentBrickTexture = ServiceLocator.Get<IAssetsService>().Get<Texture2D>("BrickSword");
+                                break;
+                            case 3:
+                                currentBrickTexture = ServiceLocator.Get<IAssetsService>().Get<Texture2D>("BrickMagic");
+                                break;
+                            case 4:
+                                currentBrickTexture = ServiceLocator.Get<IAssetsService>().Get<Texture2D>("BrickArmor");
+                                break;
+                        }
 
-                        float x = bounds.X + offsetXSword + col * (brickSwordTexture.Width + spaceBetweenBricks);
-                        float y = bounds.Y + verticalOffset + row * (brickSwordTexture.Height + spaceBetweenBricks);
-                        BrickSword brickSword = new BrickSword(this);
-                        brickSword.position = new Vector2(x, y);
-                        AddGameObject(brickSword);
-                    }
-                    else if (brickLayout[col, row] == 3)
-                    {
-                        var brickMagicTexture = ServiceLocator.Get<IAssetsService>().Get<Texture2D>("BrickMagic");
-                        float totalWidthMagic = cols * (brickMagicTexture.Width + spaceBetweenBricks) - spaceBetweenBricks;
-                        float offsetXMagic = (bounds.Width - totalWidthMagic) * .5f;
+                        float x = bounds.X + offsetX + col * (currentBrickTexture.Width + spaceBetweenBricks);
+                        float y = bounds.Y + verticalOffset + row * (currentBrickTexture.Height + spaceBetweenBricks);
 
-                        float x = bounds.X + offsetXMagic + col * (brickMagicTexture.Width + spaceBetweenBricks);
-                        float y = bounds.Y + verticalOffset + row * (brickMagicTexture.Height + spaceBetweenBricks);
-                        BrickMagic brickMagic = new BrickMagic(this);
-                        brickMagic.position = new Vector2(x, y);
-                        AddGameObject(brickMagic);
-                    }
-                    else if (brickLayout[col, row] == 4)
-                    {
-                        var brickArmorTexture = ServiceLocator.Get<IAssetsService>().Get<Texture2D>("BrickArmor");
-                        float totalWidthArmor = cols * (brickArmorTexture.Width + spaceBetweenBricks) - spaceBetweenBricks;
-                        float offsetXArmor = (bounds.Width - totalWidthArmor) * .5f;
+                        if (firstBrickPosition == Vector2.Zero)
+                        {
+                            firstBrickPosition = new Vector2(x, y - 30); // Ajuster la position du texte au-dessus des briques
+                        }
 
-                        float x = bounds.X + offsetXArmor + col * (brickArmorTexture.Width + spaceBetweenBricks);
-                        float y = bounds.Y + verticalOffset + row * (brickArmorTexture.Height + spaceBetweenBricks);
-                        BrickArmor brickArmor = new BrickArmor(this);
-                        brickArmor.position = new Vector2(x, y);
-                        AddGameObject(brickArmor);
+                        if (brickLayout[col, row] == 1)
+                        {
+                            Brick brick = new Brick(this);
+                            brick.position = new Vector2(x, y);
+                            AddGameObject(brick);
+                        }
+                        else if (brickLayout[col, row] == 2)
+                        {
+                            BrickSword brickSword = new BrickSword(this);
+                            brickSword.position = new Vector2(x, y);
+                            AddGameObject(brickSword);
+                        }
+                        else if (brickLayout[col, row] == 3)
+                        {
+                            BrickMagic brickMagic = new BrickMagic(this);
+                            brickMagic.position = new Vector2(x, y);
+                            AddGameObject(brickMagic);
+                        }
+                        else if (brickLayout[col, row] == 4)
+                        {
+                            BrickArmor brickArmor = new BrickArmor(this);
+                            brickArmor.position = new Vector2(x, y);
+                            AddGameObject(brickArmor);
+                        }
                     }
                 }
             }
+
+            return firstBrickPosition;
         }
     }
 }

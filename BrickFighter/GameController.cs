@@ -1,4 +1,5 @@
-﻿using BrickFighter.Services;
+﻿using BrickFighter.Scenes;
+using BrickFighter.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -38,8 +39,15 @@ namespace BrickFighter
 
         public void BallOut()
         {
+            var sm = ServiceLocator.Get<ISceneManager>();
+
             lifes--;
-            //change de scene si life <= 0
+            if ( lifes == 0 )
+            {
+                sm.Load<FightScene>();
+            }
+            //return lifes;
+
         }
 
         public void AddPoints(int points)

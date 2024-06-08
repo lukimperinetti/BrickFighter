@@ -57,6 +57,7 @@ namespace BrickFighter
             _assetsService.Load<Texture2D>("quitButton");
             _assetsService.Load<Texture2D>("scoreButton");
             _assetsService.Load<Texture2D>("Title");
+            _assetsService.Load<SpriteFont>("MyFont");
 
             // Load the initial scene
             _sceneManager.Load<MenuScene>();
