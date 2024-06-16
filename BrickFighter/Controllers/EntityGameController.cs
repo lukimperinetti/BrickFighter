@@ -1,4 +1,5 @@
-﻿using BrickFighter.Scenes;
+﻿using BrickFighter.Entity;
+using BrickFighter.Scenes;
 using BrickFighter.Services;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -7,22 +8,28 @@ namespace BrickFighter.Controllers
 {
     public class EntityGameController
     {
-        public List<string> inventory = ServiceLocator.Get<GameController>().inventory;
-        public int power { get; private set; } = 10;
-        public int health { get; private set; } = 100;
-        public int healPoints { get; private set; } = 0;
+        private static EntityGameController _instance;
+        public static EntityGameController Instance => _instance ??= new EntityGameController(); // gqrde cette instqnce en mémoire
 
-        public EntityGameController()
+        public int Life { get; set; } = 100;
+        public int HealPoints { get; set; } = 0;
+        public int Power { get; set; } = 10;
+
+        private EntityGameController()
         {
             ServiceLocator.Register(this);
         }
 
         public void Reset()
         {
-            inventory = new List<string>();
-            power = 10;
-            health = 100;
-            healPoints = 0;
+            Power = 10;
+            Life = 100;
+            HealPoints = 0;
+        }
+
+        public void AddLife()
+        {
+            Life += 50;
         }
 
         public void PlayerWin()
@@ -39,25 +46,23 @@ namespace BrickFighter.Controllers
 
         public void AddBuff(string type)
         {
-            //On parcour l'inventaire et pour chaque type on fait :
             if (type == "armor")
             {
-                Debug.WriteLine($"Le player à {health}hp");
-                health += 50;
-                Debug.WriteLine($"50 hp sont ajouté au player. Il à maintenant {health}hp");
+                Debug.WriteLine($"Le player a {Life}hp");
+                Life += 50;
+                Debug.WriteLine($"50 hp sont ajoutés au player. Il a maintenant {Life}hp");
             }
             if (type == "magic")
             {
-                Debug.WriteLine($"Le player à {healPoints} heal point(s)");
-                healPoints += 25;
-                Debug.WriteLine($"25magic sont ajouté au player. Il à maintenant {healPoints} heal points");
-
+                Debug.WriteLine($"Le player a {HealPoints} heal point(s)");
+                HealPoints += 25;
+                Debug.WriteLine($"25 magic sont ajoutés au player. Il a maintenant {HealPoints} heal points");
             }
             if (type == "sword")
             {
-                Debug.WriteLine($"Le player à {power} force");
-                power += 10;
-                Debug.WriteLine($"10magic sont ajouté au player. Il à maintenant {power} force");
+                Debug.WriteLine($"Le player a {Power} force");
+                Power += 30;
+                Debug.WriteLine($"30 power sont ajoutés au player. Il a maintenant {Power} force");
             }
         }
     }

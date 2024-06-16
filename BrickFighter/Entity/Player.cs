@@ -1,18 +1,35 @@
 ﻿using BrickFighter.Controllers;
 using BrickFighter.Services;
 using System;
+using System.Diagnostics;
 
 namespace BrickFighter.Entity
 {
     public class Player : Entity
     {
-        //private static Random rnd = new Random();
-        public int _health;
+        private EntityGameController _entityGameController;
+
+        public int Life
+        {
+            get => _entityGameController.Life;
+            private set => _entityGameController.Life = value;
+        }
+
+        public int HealPoints
+        {
+            get => _entityGameController.HealPoints;
+            private set => _entityGameController.HealPoints = value;
+        }
+
+        public int Power
+        {
+            get => _entityGameController.Power;
+            private set => _entityGameController.Power = value;
+        }
 
         public Player(EntityGameController entityGameController) : base(entityGameController)
         {
-            _health = 100;
-            Power = 10;
+            _entityGameController = entityGameController;
         }
 
         public enum State
@@ -20,7 +37,9 @@ namespace BrickFighter.Entity
             Attack,
             Heal
         }
+
         public State CurrentState { get; private set; }
+
         public void TransitionToState(State newState, Entity entity)
         {
             CurrentState = newState;
@@ -36,26 +55,34 @@ namespace BrickFighter.Entity
                     break;
             }
         }
+
         protected override void Attack(Entity target)
         {
             Console.WriteLine("Player is attacking!");
-            /*if (target == null)
+           /* if (target == null)
                 throw new ArgumentNullException(nameof(target));
 
             int damage = Power;
-            target.Health -= damage;
+            target.Life -= damage;
             Console.WriteLine($"Player attacks Enemy for {damage} damage!");*/
         }
 
         private void Heal()
         {
-            int healAmount = (int)(_health * 0.3);
-            _health += healAmount;
+            int healAmount = (int)(Life * 0.3);
+            Life += healAmount;
             Console.WriteLine($"Player heals for {healAmount} health points!");
         }
+
         protected override void OnDeath()
         {
             _entityGameController.PlayerLoose();
         }
+
+        public void AddBuff(string type)
+        {
+            _entityGameController.AddBuff(type);
+        }
     }
 }
+

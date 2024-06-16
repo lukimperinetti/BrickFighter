@@ -29,17 +29,15 @@ namespace BrickFighter.Entity
         public Entity(EntityGameController entityGameController)
         {
             _entityGameController = entityGameController;
-            /*_player = ServiceLocator.Get<Player>();
-            _enemy = ServiceLocator.Get<Enemy>();*/
         }
 
         public void Load()
         {
             var screen = ServiceLocator.Get<IScreenService>();
             var assetsService = ServiceLocator.Get<IAssetsService>();
-            // Add any additional loading logic here
         }
 
+        public virtual void Update(float dt) { }
         protected virtual void Attack(Entity target)
         {
             if (target == null)
@@ -51,12 +49,11 @@ namespace BrickFighter.Entity
             {
                 _entityGameController.PlayerWin();
             }
-            else if (this is Enemy && _player.Health <= 0)
+            else if (this is Enemy && _player.Life <= 0)
             {
                 _entityGameController.PlayerLoose();
             }
         }
-
         protected abstract void OnDeath();
     }
 }

@@ -4,12 +4,12 @@ using BrickFighter.Scenes;
 using BrickFighter.Services;
 using Microsoft.Xna.Framework.Graphics;
 
-
 namespace BrickFighter.Props
 {
     public class BrickSword : SpriteGameObject
     {
-        private const string SwordPower = "sword";
+        private const string sword = "sword";
+
         public BrickSword(Scene root) : base(root)
         {
             texture = ServiceLocator.Get<IAssetsService>().Get<Texture2D>("BrickSword");
@@ -17,7 +17,7 @@ namespace BrickFighter.Props
 
         public override void OnCollide(SpriteGameObject other)
         {
-            ServiceLocator.Get<EntityGameController>().AddBuff(SwordPower);
+            ServiceLocator.Get<EntityGameController>().AddBuff("sword");
             enable = false;
             isFree = true;
         }

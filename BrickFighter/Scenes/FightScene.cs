@@ -4,14 +4,11 @@ using BrickFighter.Services;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using System;
 
 namespace BrickFighter.Scenes
 {
     public class FightScene : Scene
     {
-        private static Random rnd = new Random();
-
         private Player _player;
         private Enemy _enemy;
         private SpriteFont _font;
@@ -19,6 +16,9 @@ namespace BrickFighter.Scenes
         private Texture2D _enemyTexture;
         private Vector2 _playerPosition;
         private Vector2 _enemyPosition;
+        private int _enemyHealth;
+        private int _playerPower;
+        private int _enemyPower;
 
         public override void Load()
         {
@@ -27,17 +27,16 @@ namespace BrickFighter.Scenes
             _playerTexture = assetsService.Get<Texture2D>("PlayerTexture");
             _enemyTexture = assetsService.Get<Texture2D>("EnemyTexture");
 
-            var entityGameController = ServiceLocator.Get<EntityGameController>();
+            var entityGameController = EntityGameController.Instance;
             _player = new Player(entityGameController);
             _enemy = new Enemy(entityGameController);
 
-            // Position initiale des entités
             _playerPosition = new Vector2(100, 300);
             _enemyPosition = new Vector2(1200, 300);
 
-            //load with health
-            _player._health = 100;
-            _enemy.Health = rnd.Next(200, 1000); ;
+            _enemyHealth = _enemy.Health;
+            _playerPower = _player.Power;
+            _enemyPower = _enemy.Power;
         }
 
         public override void Update(float dt)
@@ -46,25 +45,20 @@ namespace BrickFighter.Scenes
 
             if (keyboardState.IsKeyDown(Keys.Space))
             {
-                // Le joueur attaque l'ennemi lorsqu'on appuie sur la barre d'espace
-                //_player.Attack(_enemy);
+                // Logique d'attaque ici
             }
 
-            // Mise à jour de l'ennemi
             _enemy.Update(dt);
 
-            //est il mort ?
-            if (_player._health <= 0 || _enemy.Health <= 0)
+            if (_player.Life <= 0 || _enemy.Health <= 0)
             {
                 var sceneManager = ServiceLocator.Get<ISceneManager>();
-                if (_player._health <= 0)
+                if (_player.Life <= 0)
                 {
-                    // Le joueur a perdu
                     sceneManager.Load<GameOverScene>();
                 }
                 else if (_enemy.Health <= 0)
                 {
-                    // L'ennemi a perdu
                     sceneManager.Load<WinScene>();
                 }
             }
@@ -74,13 +68,14 @@ namespace BrickFighter.Scenes
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            // Draw player
             spriteBatch.Draw(_playerTexture, _playerPosition, Color.White);
             spriteBatch.Draw(_enemyTexture, _enemyPosition, Color.White);
 
-            // draw life bar
-            spriteBatch.DrawString(_font, $"Player Health: {_player._health}", new Vector2(100, 250), Color.White);
-            spriteBatch.DrawString(_font, $"Enemy Health: {_enemy.Health}", new Vector2(1200, 250), Color.White);
+            spriteBatch.DrawString(_font, $"Player Health: {_player.Life}", new Vector2(100, 250), Color.White);
+            spriteBatch.DrawString(_font, $"Enemy Health: {_enemyHealth}", new Vector2(1200, 250), Color.White);
+
+            spriteBatch.DrawString(_font, $"Player power: {_playerPower}", new Vector2(100, 220), Color.White);
+            spriteBatch.DrawString(_font, $"Enemy Power: {_enemyPower}", new Vector2(1200, 220), Color.White);
 
             base.Draw(spriteBatch);
         }

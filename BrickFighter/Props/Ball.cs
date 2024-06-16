@@ -129,9 +129,9 @@ namespace BrickFighter.Props
                 position.X = _bounds.Right - offset.X;
                 _direction.X *= -1;
             }
-            else if (position.X < _bounds.Left - offset.X)
+            else if (position.X < _bounds.Left + offset.X)
             {
-                position.X = _bounds.Left - offset.X;
+                position.X = _bounds.Left + offset.X;
                 _direction.X *= -1;
             }
             if (position.Y < _bounds.Top + offset.Y)
@@ -141,6 +141,8 @@ namespace BrickFighter.Props
             }
             _direction = Vector2.Normalize(_direction);
         }
+
+
 
     }
 }

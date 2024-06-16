@@ -4,7 +4,6 @@ using BrickFighter.Scenes;
 using BrickFighter.Services;
 using Microsoft.Xna.Framework.Graphics;
 
-
 namespace BrickFighter.Props
 {
     public class BrickArmor : SpriteGameObject
@@ -17,7 +16,7 @@ namespace BrickFighter.Props
 
         public override void OnCollide(SpriteGameObject other)
         {
-            ServiceLocator.Get<EntityGameController>().AddBuff(armor);
+            ServiceLocator.Get<EntityGameController>().AddBuff("armor");
             enable = false;
             isFree = true;
         }

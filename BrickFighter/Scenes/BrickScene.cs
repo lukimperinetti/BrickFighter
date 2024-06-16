@@ -1,10 +1,10 @@
 ﻿using BrickFighter.Controllers;
+using BrickFighter.Entity;
 using BrickFighter.Props;
 using BrickFighter.Services;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using System;
 
 namespace BrickFighter.Scenes
 {
@@ -13,11 +13,15 @@ namespace BrickFighter.Scenes
         private SpriteFont _spriteFont;
         private Vector2 _textPosition;
         private GameController _gameController;
+        private Player _player;
 
         public override void Load()
         {
+            var entityGameController = ServiceLocator.Get<EntityGameController>();
             var screen = ServiceLocator.Get<IScreenService>();
             var assetsService = ServiceLocator.Get<IAssetsService>();
+
+            _player = new Player(entityGameController);
 
             Rectangle bounds = screen.Bounds;
             AddGameObject(new Ball(bounds, this));
@@ -32,6 +36,7 @@ namespace BrickFighter.Scenes
 
         public override void Update(float dt)
         {
+
             var gc = ServiceLocator.Get<GameController>();
             var sm = ServiceLocator.Get<ISceneManager>();
             var bricks = GetGameObjects<Brick>();
@@ -60,8 +65,6 @@ namespace BrickFighter.Scenes
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            //var screen = ServiceLocator.Get<IScreenService>();
-
             // Dessiner du texte à l'écran
             Color color = Color.White; // Couleur du texte
             string lifesText = $"Vies: {_gameController.lifes}";
@@ -114,7 +117,7 @@ namespace BrickFighter.Scenes
 
                         if (firstBrickPosition == Vector2.Zero)
                         {
-                            firstBrickPosition = new Vector2(x, y - 30); // Ajuster la position du texte au-dessus des briques
+                            firstBrickPosition = new Vector2(x, y - 30); 
                         }
 
                         if (brickLayout[col, row] == 1)

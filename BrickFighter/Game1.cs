@@ -1,12 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using BrickFighter.Scenes;
-using Microsoft.Xna.Framework.Input;
 using BrickFighter.Services;
-using System.Diagnostics;
 using BrickFighter.Controllers;
-//using BrickFighter.Entity;
-using System.Numerics;
 
 namespace BrickFighter
 {
@@ -31,8 +27,9 @@ namespace BrickFighter
 
         protected override void Initialize()
         {
-            new GameController();
-            new EntityGameController();
+            // Initialize and register services and controllers
+            var gameController = new GameController();
+            var entityGameController = EntityGameController.Instance;
 
             _assetsService = new AssetsService(Content);
             _screenService = new ScreenService(_graphics);
@@ -43,6 +40,8 @@ namespace BrickFighter
             ServiceLocator.Register(Content);
             ServiceLocator.Register(_spriteBatch);
             ServiceLocator.Register(_assetsService);
+            ServiceLocator.Register(_screenService);
+            ServiceLocator.Register(_sceneManager);
 
             base.Initialize();
         }
@@ -66,18 +65,15 @@ namespace BrickFighter
             _assetsService.Load<Texture2D>("YouWin");
             _assetsService.Load<Texture2D>("PlayerTexture");
             _assetsService.Load<Texture2D>("EnemyTexture");
-            
-            //Load fonts
+
+            // Load fonts
             _assetsService.Load<SpriteFont>("MyFont");
 
             // Load the initial scene
-            //_sceneManager.Load<MenuScene>();
+            _sceneManager.Load<MenuScene>();
 
-            //@TODO : Remove this before final push
-            _sceneManager.Load<FightScene>();
-
-
-
+            //@TODO: Remove this before final push
+            //_sceneManager.Load<FightScene>();
         }
 
         protected override void Update(GameTime gameTime)

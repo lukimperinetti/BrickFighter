@@ -10,10 +10,10 @@ namespace BrickFighter.Entity
 
         public Enemy(EntityGameController entityGameController) : base(entityGameController)
         {
-            ServiceLocator.Register(this);
+            //ServiceLocator.Register(this);
             Health = rnd.Next(200, 1000);
-            Power = rnd.Next(10, 25);
-            CurrentState = State.None; // Initialize the state to attack state
+            Power = rnd.Next(15, 30);
+            CurrentState = State.None; // Initialize the state
         }
 
         public enum State
@@ -25,7 +25,7 @@ namespace BrickFighter.Entity
 
         public State CurrentState { get; private set; }
 
-        public void Update(float dt)
+        public override void Update(float dt)
         {
             switch (CurrentState)
             {
@@ -43,7 +43,7 @@ namespace BrickFighter.Entity
 
         private void Waiting()
         {
-            // Implement waiting logic if needed
+            //cooldown between attacks
         }
 
         protected override void Attack(Entity target)
