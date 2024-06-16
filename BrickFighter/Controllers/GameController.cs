@@ -44,7 +44,7 @@ namespace BrickFighter.Controllers
             lifes--;
             if (lifes == 0)
             {
-                //sm.Load<FightScene>();
+                sm.Load<FightScene>();
             }
         }
 

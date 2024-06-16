@@ -1,4 +1,4 @@
-﻿/*using BrickFighter.Controllers;
+﻿using BrickFighter.Controllers;
 using BrickFighter.Services;
 using System;
 
@@ -46,14 +46,16 @@ namespace BrickFighter.Entity
             // Implement waiting logic if needed
         }
 
-        private void Attack(Entity target)
+        protected override void Attack(Entity target)
         {
-            if (target == null)
+            Console.WriteLine("Player is attacking!");
+
+            /*if (target == null)
                 throw new ArgumentNullException(nameof(target));
 
             int damage = Power;
             target.Health -= damage;
-            Console.WriteLine($"Enemy attacks player for {damage} damage!");
+            Console.WriteLine($"Enemy attacks player for {damage} damage!");*/
         }
 
         private void Heal()
@@ -69,4 +71,3 @@ namespace BrickFighter.Entity
         }
     }
 }
-*/

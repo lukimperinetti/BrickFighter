@@ -1,4 +1,4 @@
-﻿/*using BrickFighter.Controllers;
+﻿using BrickFighter.Controllers;
 using BrickFighter.Services;
 using System;
 
@@ -29,8 +29,8 @@ namespace BrickFighter.Entity
         public Entity(EntityGameController entityGameController)
         {
             _entityGameController = entityGameController;
-            _player = ServiceLocator.Get<Player>();
-            _enemy = ServiceLocator.Get<Enemy>();
+            /*_player = ServiceLocator.Get<Player>();
+            _enemy = ServiceLocator.Get<Enemy>();*/
         }
 
         public void Load()
@@ -40,7 +40,7 @@ namespace BrickFighter.Entity
             // Add any additional loading logic here
         }
 
-        public virtual void Attack(Entity target)
+        protected virtual void Attack(Entity target)
         {
             if (target == null)
                 throw new ArgumentNullException(nameof(target));
@@ -60,4 +60,3 @@ namespace BrickFighter.Entity
         protected abstract void OnDeath();
     }
 }
-*/

@@ -1,4 +1,4 @@
-﻿/*using BrickFighter.Controllers;
+﻿using BrickFighter.Controllers;
 using BrickFighter.Services;
 using System;
 
@@ -6,7 +6,7 @@ namespace BrickFighter.Entity
 {
     public class Player : Entity
     {
-        private static Random rnd = new Random();
+        //private static Random rnd = new Random();
         public int _health;
 
         public Player(EntityGameController entityGameController) : base(entityGameController)
@@ -21,14 +21,14 @@ namespace BrickFighter.Entity
             Heal
         }
         public State CurrentState { get; private set; }
-        public void TransitionToState(State newState)
+        public void TransitionToState(State newState, Entity entity)
         {
             CurrentState = newState;
 
             switch (newState)
             {
                 case State.Attack:
-                    Attack(_enemy);
+                    Attack(target: entity);
                     break;
 
                 case State.Heal:
@@ -36,9 +36,15 @@ namespace BrickFighter.Entity
                     break;
             }
         }
-        private void Attack()
+        protected override void Attack(Entity target)
         {
             Console.WriteLine("Player is attacking!");
+            /*if (target == null)
+                throw new ArgumentNullException(nameof(target));
+
+            int damage = Power;
+            target.Health -= damage;
+            Console.WriteLine($"Player attacks Enemy for {damage} damage!");*/
         }
 
         private void Heal()
@@ -53,4 +59,3 @@ namespace BrickFighter.Entity
         }
     }
 }
-*/

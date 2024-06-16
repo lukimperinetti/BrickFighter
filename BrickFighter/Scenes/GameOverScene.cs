@@ -23,7 +23,7 @@ namespace BrickFighter.Scenes
             var screen = ServiceLocator.Get<IScreenService>();
             var assetsService = ServiceLocator.Get<IAssetsService>();
 
-            titleTexture = assetsService.Get<Texture2D>("Title");
+            titleTexture = assetsService.Get<Texture2D>("YouLose");
             ngButtonTexture = assetsService.Get<Texture2D>("NGbutton");
             quitButtonTexture = assetsService.Get<Texture2D>("quitButton");
 

@@ -44,12 +44,12 @@ namespace BrickFighter.Scenes
 
             _scoreButton.OnClick = () =>
             {
-                // Mettre ici l'action à exécuter lors du clic sur le bouton Score
+                // recup le hight score
             };
 
             _quitButton.OnClick = () =>
             {
-                //quit ??????
+                //quit
             };
         }
 
