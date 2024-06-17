@@ -7,10 +7,12 @@ namespace BrickFighter.Entity
     public abstract class Entity
     {
         protected EntityGameController _entityGameController; // Instance de GameController
-        protected Player _player;
-        protected Enemy _enemy;
 
+        public int HealPoints { get; set; } = 0;
+    
         private int _health;
+        public int Power { get; set; }
+
         protected internal int Health
         {
             get { return _health; }
@@ -24,36 +26,26 @@ namespace BrickFighter.Entity
             }
         }
 
-        public int Power { get; set; }
-
         public Entity(EntityGameController entityGameController)
         {
             _entityGameController = entityGameController;
         }
 
-        public void Load()
+
+
+        public void TakeDamages(int damage)
         {
-            var screen = ServiceLocator.Get<IScreenService>();
-            var assetsService = ServiceLocator.Get<IAssetsService>();
+            Health -= damage;
+            if (_health <= 0) Health = 0;
+        }
+
+        public bool IsAlive()
+        {
+            return Health > 0;
         }
 
         public virtual void Update(float dt) { }
-        protected virtual void Attack(Entity target)
-        {
-            if (target == null)
-                throw new ArgumentNullException(nameof(target));
 
-            target.Health -= this.Power;
-
-            if (this is Player && target.Health <= 0)
-            {
-                _entityGameController.PlayerWin();
-            }
-            else if (this is Enemy && _player.Life <= 0)
-            {
-                _entityGameController.PlayerLoose();
-            }
-        }
         protected abstract void OnDeath();
     }
 }

@@ -15,6 +15,14 @@ namespace BrickFighter.Controllers
         public int HealPoints { get; set; } = 0;
         public int Power { get; set; } = 10;
 
+        public enum BattleState
+        {
+            Start,
+            PlayerTurn,
+            EnemyTurn,
+            End
+        }
+
         private EntityGameController()
         {
             ServiceLocator.Register(this);

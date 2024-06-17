@@ -11,7 +11,7 @@ namespace BrickFighter.Entity
 
         public int Life
         {
-            get => _entityGameController.Life;
+            get => _entityGameController.Life; // Je get la life mise a jour dans mon controller
             private set => _entityGameController.Life = value;
         }
 
@@ -32,41 +32,6 @@ namespace BrickFighter.Entity
             _entityGameController = entityGameController;
         }
 
-        public enum State
-        {
-            Attack,
-            Heal
-        }
-
-        public State CurrentState { get; private set; }
-
-        public void TransitionToState(State newState, Entity entity)
-        {
-            CurrentState = newState;
-
-            switch (newState)
-            {
-                case State.Attack:
-                    Attack(target: entity);
-                    break;
-
-                case State.Heal:
-                    Heal();
-                    break;
-            }
-        }
-
-        protected override void Attack(Entity target)
-        {
-            Console.WriteLine("Player is attacking!");
-           /* if (target == null)
-                throw new ArgumentNullException(nameof(target));
-
-            int damage = Power;
-            target.Life -= damage;
-            Console.WriteLine($"Player attacks Enemy for {damage} damage!");*/
-        }
-
         private void Heal()
         {
             int healAmount = (int)(Life * 0.3);
@@ -77,11 +42,6 @@ namespace BrickFighter.Entity
         protected override void OnDeath()
         {
             _entityGameController.PlayerLoose();
-        }
-
-        public void AddBuff(string type)
-        {
-            _entityGameController.AddBuff(type);
         }
     }
 }
