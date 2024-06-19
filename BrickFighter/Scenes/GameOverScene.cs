@@ -1,4 +1,5 @@
-﻿using BrickFighter.GameObjects;
+﻿using BrickFighter.Controllers;
+using BrickFighter.GameObjects;
 using BrickFighter.Props;
 using BrickFighter.Services;
 using Microsoft.Xna.Framework;
@@ -34,6 +35,7 @@ namespace BrickFighter.Scenes
             // Définir les actions à exécuter lorsque les boutons sont cliqués
             _newGameButton.OnClick = () =>
             {
+                ServiceLocator.Get<GameController>().Reset();
                 var sceneManager = ServiceLocator.Get<ISceneManager>();
                 sceneManager.Load<BrickScene>();
             };

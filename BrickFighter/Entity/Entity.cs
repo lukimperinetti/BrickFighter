@@ -8,7 +8,7 @@ namespace BrickFighter.Entity
     {
         protected EntityGameController _entityGameController; // Instance de GameController
 
-        public int HealPoints { get; set; } = 0;
+        //public int HealPoints { get; set; } = 0;
     
         private int _health;
         public int Power { get; set; }
@@ -31,6 +31,12 @@ namespace BrickFighter.Entity
             _entityGameController = entityGameController;
         }
 
+        public void PerformAttack(Entity attacker, Entity defender)
+        {
+            int damage = attacker.Power - defender.Health;
+            if (damage < 0) damage = 0;
+            defender.TakeDamages(damage);
+        }
 
 
         public void TakeDamages(int damage)
@@ -46,6 +52,6 @@ namespace BrickFighter.Entity
 
         public virtual void Update(float dt) { }
 
-        protected abstract void OnDeath();
+        public abstract void OnDeath();
     }
 }

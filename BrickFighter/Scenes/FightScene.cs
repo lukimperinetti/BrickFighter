@@ -48,7 +48,33 @@ namespace BrickFighter.Scenes
         public override void Update(float dt)
         {
 
-            switch ()
+            switch (_curentState)
+            {
+                case BattleState.Start:
+                    _curentState = BattleState.PlayerTurn;
+                    break;
+                
+                case BattleState.PlayerTurn:
+                    _player.PerformAttack(_player, _enemy);
+                    _curentState = _enemy.IsAlive() ? BattleState.EnemyTurn : BattleState.End;
+                    break;
+
+                case BattleState.EnemyTurn:
+                    _enemy.PerformAttack(_enemy, _player);
+                    _curentState = _player.IsAlive() ? BattleState.PlayerTurn : BattleState.End;
+                    break;
+
+                case BattleState.End:
+                    if (!_player.IsAlive())
+                    {
+                        _player.OnDeath();
+                    } else
+                    {
+                        _enemy.OnDeath();
+                    }
+                    break;
+
+            }
 
             /*var keyboardState = Keyboard.GetState();
 

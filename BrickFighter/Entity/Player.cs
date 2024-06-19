@@ -32,14 +32,14 @@ namespace BrickFighter.Entity
             _entityGameController = entityGameController;
         }
 
-        private void Heal()
+        public void Heal()
         {
             int healAmount = (int)(Life * 0.3);
             Life += healAmount;
             Console.WriteLine($"Player heals for {healAmount} health points!");
         }
 
-        protected override void OnDeath()
+        public override void OnDeath()
         {
             _entityGameController.PlayerLoose();
         }
