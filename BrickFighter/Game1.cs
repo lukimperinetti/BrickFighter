@@ -4,6 +4,7 @@ using BrickFighter.Scenes;
 using BrickFighter.Services;
 using BrickFighter.Controllers;
 using BrickFighter.Entity;
+using Microsoft.Xna.Framework.Input;
 
 namespace BrickFighter
 {
@@ -79,16 +80,19 @@ namespace BrickFighter
 
             // Load the initial scene
             _sceneManager.Load<MenuScene>();
-
-            //@TODO: Remove this before final push
-            //_sceneManager.Load<FightScene>();
         }
 
         protected override void Update(GameTime gameTime)
         {
+            
             // Update the current scene
             _sceneManager.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
             base.Update(gameTime);
+        }
+
+        public void Quit()
+        {
+            this.Exit();
         }
 
         protected override void Draw(GameTime gameTime)

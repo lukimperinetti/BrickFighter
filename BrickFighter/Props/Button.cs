@@ -32,7 +32,6 @@ namespace BrickFighter.GameObjects
             return _boundingBox.Contains(mouseState.Position);
         }
 
-        // Méthode de mise à jour
         public override void Update(float dt)
         {
             if (!enable) return;
