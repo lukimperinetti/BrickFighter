@@ -1,36 +1,72 @@
 ﻿using BrickFighter.Controllers;
-using BrickFighter.Services;
 using System;
+using System.Diagnostics;
 
 namespace BrickFighter.Entity
 {
     public class Enemy : Entity
     {
+        private EntityGameController _entityGameController;
+        private Player _player;
         private static Random rnd = new Random();
+
+        public int EnemyLife
+        {
+            get => _entityGameController.enemyLife;
+            private set => _entityGameController.enemyLife = value;
+        }
+
+        public int EnemyPower
+        {
+            get => _entityGameController.enemyPower;
+            private set => _entityGameController.enemyPower = value;
+        }
 
         public Enemy(EntityGameController entityGameController) : base(entityGameController)
         {
-            Health = rnd.Next(200, 1000);
-            Power = rnd.Next(15, 30);
+            _entityGameController = entityGameController;
+            EnemyLife = rnd.Next(150, 300);
+            EnemyPower = rnd.Next(15, 30);
+            Debug.WriteLine("Enemy created with random values: Life = " + EnemyLife + ", Power = " + EnemyPower);
         }
 
-        public enum State
+        public void SetPlayer(Player player)
         {
-            None,
-            Attack,
-            Heal
+            _player = player;
+            Debug.WriteLine("Player set for enemy");
         }
 
-        public void Heal()
+        public void PerformAttack()
         {
-            int healAmount = (int)(Health * 0.3);
-            Health += healAmount;
-            Console.WriteLine($"Enemy heals for {healAmount} health points!");
+            if (_player == null)
+            {
+                throw new NullReferenceException("Player is not set.");
+            }
+
+            int damage = EnemyPower;
+            Debug.WriteLine("Enemy attacking player with " + damage + " damage.");
+            _player.TakeDamages(damage);
+        }
+
+        public void TakeDamages(int damage)
+        {
+            EnemyLife -= damage;
+            Debug.WriteLine("Enemy took " + damage + " damage. Remaining Life = " + EnemyLife);
+            if (EnemyLife <= 0)
+            {
+                OnDeath();
+            }
         }
 
         public override void OnDeath()
         {
+            Debug.WriteLine("Enemy died.");
             _entityGameController.PlayerWin();
+        }
+
+        public bool IsAlive()
+        {
+            return EnemyLife > 0;
         }
     }
 }

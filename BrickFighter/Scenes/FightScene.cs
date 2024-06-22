@@ -3,7 +3,7 @@ using BrickFighter.Entity;
 using BrickFighter.Services;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
+using System.Diagnostics;
 using static BrickFighter.Controllers.EntityGameController;
 
 namespace BrickFighter.Scenes
@@ -23,6 +23,11 @@ namespace BrickFighter.Scenes
         private int _playerPower;
         private int _enemyPower;
 
+        // Variable de temps
+        private float _baseTime = 0f;
+        private float _turnDelay = 1f; // Délai de 1 seconde entre les tours
+        private bool _transition = false;
+
         public override void Load()
         {
             var assetsService = ServiceLocator.Get<IAssetsService>();
@@ -33,72 +38,91 @@ namespace BrickFighter.Scenes
             var entityGameController = EntityGameController.Instance;
             _player = new Player(entityGameController);
             _enemy = new Enemy(entityGameController);
+            _playerHealth = _player.PlayerLife;
+            _enemyHealth = _enemy.EnemyLife;
+
+            _player.SetEnemy(_enemy);
+            _enemy.SetPlayer(_player);
+            _playerPower = _player.PlayerPower;
+            _enemyPower = _enemy.EnemyPower;
 
             _playerPosition = new Vector2(100, 300);
             _enemyPosition = new Vector2(1200, 300);
 
-            _playerHealth = _player.Life;
-            _enemyHealth = _enemy.Health;
-            _playerPower = _player.Power;
-            _enemyPower = _enemy.Power;
-
             _curentState = BattleState.Start;
+
+            Debug.WriteLine("FightScene loaded. Starting state: " + _curentState);
         }
 
         public override void Update(float dt)
         {
+            if (_transition)
+            {
+                _baseTime += dt;
+                if (_baseTime >= _turnDelay)
+                {
+                    _transition = false;
+                    _baseTime = 0f;
+                }
+                else
+                {
+                    return; // Attendre que le délai soit écoulé
+                }
+            }
 
             switch (_curentState)
             {
                 case BattleState.Start:
+                    Debug.WriteLine("BattleState: Start");
                     _curentState = BattleState.PlayerTurn;
                     break;
-                
+
                 case BattleState.PlayerTurn:
-                    _player.PerformAttack(_player, _enemy);
-                    _curentState = _enemy.IsAlive() ? BattleState.EnemyTurn : BattleState.End;
+                    Debug.WriteLine("BattleState: PlayerTurn");
+                    _player.PerformAttack();
+                    _enemyHealth = _enemy.EnemyLife;
+                    Debug.WriteLine($"Player attacked enemy. Enemy health: {_enemyHealth}");
+                    if (!_enemy.IsAlive())
+                    {
+                        Debug.WriteLine("Enemy is dead. Transitioning to End state.");
+                        _curentState = BattleState.End;
+                    }
+                    else
+                    {
+                        _transition = true;
+                        _curentState = BattleState.EnemyTurn;
+                    }
                     break;
 
                 case BattleState.EnemyTurn:
-                    _enemy.PerformAttack(_enemy, _player);
-                    _curentState = _player.IsAlive() ? BattleState.PlayerTurn : BattleState.End;
+                    Debug.WriteLine("BattleState: EnemyTurn");
+                    _enemy.PerformAttack();
+                    _playerHealth = _player.PlayerLife;
+                    Debug.WriteLine($"Enemy attacked player. Player health: {_playerHealth}");
+                    if (!_player.IsAlive())
+                    {
+                        Debug.WriteLine("Player is dead. Transitioning to End state.");
+                        _curentState = BattleState.End;
+                    }
+                    else
+                    {
+                        _transition = true;
+                        _curentState = BattleState.PlayerTurn;
+                    }
                     break;
 
                 case BattleState.End:
+                    Debug.WriteLine("BattleState: End");
                     if (!_player.IsAlive())
                     {
                         _player.OnDeath();
-                    } else
+                    }
+                    else
                     {
                         _enemy.OnDeath();
                     }
                     break;
-
             }
-
-            /*var keyboardState = Keyboard.GetState();
-
-            if (keyboardState.IsKeyDown(Keys.Space))
-            {
-                // Logique d'attaque ici
-            }
-
-            _enemy.Update(dt);
-
-            if (_playerHealth <= 0 || _enemyHealth <= 0)
-            {
-                var sceneManager = ServiceLocator.Get<ISceneManager>();
-                if (_playerHealth <= 0)
-                {
-                    sceneManager.Load<GameOverScene>();
-                }
-                else if (_enemyHealth <= 0)
-                {
-                    sceneManager.Load<WinScene>();
-                }
-            }*/
-
-            base.Update(dt);
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -109,7 +133,7 @@ namespace BrickFighter.Scenes
             spriteBatch.DrawString(_font, $"Player Health: {_playerHealth}", new Vector2(100, 250), Color.White);
             spriteBatch.DrawString(_font, $"Enemy Health: {_enemyHealth}", new Vector2(1200, 250), Color.White);
 
-            spriteBatch.DrawString(_font, $"Player power: {_playerPower}", new Vector2(100, 220), Color.White);
+            spriteBatch.DrawString(_font, $"Player Power: {_playerPower}", new Vector2(100, 220), Color.White);
             spriteBatch.DrawString(_font, $"Enemy Power: {_enemyPower}", new Vector2(1200, 220), Color.White);
 
             base.Draw(spriteBatch);

@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using BrickFighter.Scenes;
 using BrickFighter.Services;
 using BrickFighter.Controllers;
+using BrickFighter.Entity;
 
 namespace BrickFighter
 {
@@ -31,10 +32,17 @@ namespace BrickFighter
             var gameController = new GameController();
             var entityGameController = EntityGameController.Instance;
 
+            Player player = new Player(entityGameController);
+            Enemy enemy = new Enemy(entityGameController);
+
             _assetsService = new AssetsService(Content);
             _screenService = new ScreenService(_graphics);
             _sceneManager = new SceneManager();
             _spriteBatch = new SpriteBatch(GraphicsDevice);
+
+            // Les entités se connaissent mutuellement
+            player.SetEnemy(enemy);
+            enemy.SetPlayer(player);
 
             // Register services in the ServiceLocator
             ServiceLocator.Register(Content);

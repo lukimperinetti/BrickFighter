@@ -14,6 +14,11 @@ namespace BrickFighter.Controllers
         public int Life { get; set; } = 100;
         public int HealPoints { get; set; } = 0;
         public int Power { get; set; } = 10;
+        public int enemyLife { get; set; }
+        public int enemyPower { get; set; }
+
+        private Player _player;
+        private Enemy _enemy;
 
         public enum BattleState
         {
@@ -28,16 +33,14 @@ namespace BrickFighter.Controllers
             ServiceLocator.Register(this);
         }
 
-        public void Reset()
-        {
-            Power = 10;
-            Life = 100;
-            HealPoints = 0;
-        }
-
-        public void AddLife()
+        /*public void AddLife()
         {
             Life += 50;
+        }*/
+        public void InitializeBattle(Player player, Enemy enemy)
+        {
+            _player = player;
+            _enemy = enemy;
         }
 
         public void PlayerWin()
