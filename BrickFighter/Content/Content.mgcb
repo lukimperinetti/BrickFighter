@@ -188,6 +188,11 @@
 /processorParam:TextureFormat=Color
 /build:Title.png
 
+#begin VideoBG.mp4
+/importer:H264Importer
+/processor:VideoProcessor
+/build:VideoBG.mp4
+
 #begin YouLose.png
 /importer:TextureImporter
 /processor:TextureProcessor
