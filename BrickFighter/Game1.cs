@@ -5,6 +5,7 @@ using BrickFighter.Services;
 using BrickFighter.Controllers;
 using BrickFighter.Entity;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 
 namespace BrickFighter
 {
@@ -74,6 +75,7 @@ namespace BrickFighter
             _assetsService.Load<Texture2D>("YouWin");
             _assetsService.Load<Texture2D>("PlayerTexture");
             _assetsService.Load<Texture2D>("EnemyTexture");
+            //_assetsService.Load<MediaPlayer>("VideoBG");
 
             // Load fonts
             _assetsService.Load<SpriteFont>("MyFont");
