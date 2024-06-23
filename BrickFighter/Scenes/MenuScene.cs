@@ -45,8 +45,8 @@ namespace BrickFighter.Scenes
 
             _scoreButton.OnClick = () =>
             {
-                // @TODO : recup le hight score on a dit on laisse  pas les ordis dévérouillés petit chat
-            }; love
+                // @TODO : recup le hight score 
+            };
 
             _quitButton.OnClick = () =>
             {
