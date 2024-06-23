@@ -5,12 +5,14 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
+using System.Diagnostics;
 
 
 namespace BrickFighter.Scenes
 {
     public class MenuScene : Scene
     {
+        public Game1 game;
         private Texture2D titleTexture;
         private Texture2D ngButtonTexture;
         private Texture2D scoreButtonTexture;
@@ -35,7 +37,6 @@ namespace BrickFighter.Scenes
             _scoreButton = new Button("Score", scoreButtonTexture, (int)(screen.Center.X - scoreButtonTexture.Width / 2), (int)(_newGameButton.ButtonY + _newGameButton.Texture.Height + 50), this);
             _quitButton = new Button("Quit", quitButtonTexture, (int)(screen.Center.X - quitButtonTexture.Width / 2), (int)(_scoreButton.ButtonY + _scoreButton.Texture.Height + 50), this);
 
-            // Définir les actions à exécuter lorsque les boutons sont cliqués
             _newGameButton.OnClick = () =>
             {
                 var sceneManager = ServiceLocator.Get<ISceneManager>();
@@ -44,12 +45,13 @@ namespace BrickFighter.Scenes
 
             _scoreButton.OnClick = () =>
             {
-                // recup le hight score
+                // @TODO : recup le hight score 
             };
 
             _quitButton.OnClick = () =>
             {
-                //quit
+                Debug.WriteLine("btn clicked");
+                game.Quit();
             };
         }
 

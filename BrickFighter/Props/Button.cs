@@ -25,14 +25,12 @@ namespace BrickFighter.GameObjects
             _boundingBox = new Rectangle(buttonX, buttonY, texture.Width, texture.Height);
         }
 
-        // Vérifie si la souris est sur le bouton
         public bool IsMouseOver()
         {
             MouseState mouseState = Mouse.GetState();
             return _boundingBox.Contains(mouseState.Position);
         }
 
-        // Méthode de mise à jour
         public override void Update(float dt)
         {
             if (!enable) return;
@@ -49,7 +47,6 @@ namespace BrickFighter.GameObjects
             MouseInput.LastMouseState = mouseState;
         }
 
-        // Méthode de dessin
         public override void Draw(SpriteBatch spriteBatch)
         {
             if (!enable) return;

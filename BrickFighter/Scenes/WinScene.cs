@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
+using System.Diagnostics;
 
 
 namespace BrickFighter.Scenes
@@ -40,6 +41,7 @@ namespace BrickFighter.Scenes
 
             _quitButton.OnClick = () =>
             {
+                Debug.WriteLine("btn clicked");
                 //quit ??????
             };
         }
